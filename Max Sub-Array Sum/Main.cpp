@@ -17,7 +17,7 @@ void MaxSubarraySum3(int *arr, int n) // KADANE'S ALLGORITHM
         currenSum += arr[i];
         maxSum = max(maxSum, currenSum);
         if(currenSum < 0){
-            currenSum = 0;
+            currenSum = 0;                                                                        
         }
     }
 
