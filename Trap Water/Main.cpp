@@ -29,7 +29,6 @@ int trap(int *heights, int n)
             waterTrap += currentWater;
         }
     }
-
     cout << "water traped: " << waterTrap << endl;
 }
 
