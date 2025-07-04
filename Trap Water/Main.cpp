@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int trap(int *heights, int n)
+void trap(int *heights, int n)
 {
     int leftMax[20000], rightMax[20000];
     leftMax[0] = heights[0];
