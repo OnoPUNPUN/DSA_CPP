@@ -32,7 +32,7 @@ public:
             return;
         }
         if (isEmpty()) {
-            front_index = 0;  // first element
+            front_index = 0;
         }
         arr[++rear_index] = value;
     }
@@ -45,7 +45,6 @@ public:
         cout << "Dequeued: " << arr[front_index] << endl;
 
         if (front_index == rear_index) {
-            // only one element was present
             front_index = rear_index = -1;
         } else {
             front_index++;
