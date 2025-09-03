@@ -2,14 +2,12 @@
 using namespace std;
 
 template <typename T>
-class Stack
+struct Stack
 {
-private:
     int top;
     int maxSize;
     T *arr;
 
-public:
     Stack(int size)
     {
         maxSize = size;
