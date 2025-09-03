@@ -10,7 +10,7 @@ public:
     Queue(int size) {
         capacity = size;
         arr = new int[capacity];
-        front_index = 0;
+        front_index = -1;
         rear_index = -1;
     }
 
@@ -19,17 +19,20 @@ public:
     }
 
     bool isEmpty() {
-        return rear_index < front_index;
+        return (front_index == -1 && rear_index == -1);
     }
 
     bool isFull() {
-        return rear_index == capacity - 1;
+        return (rear_index == capacity - 1);
     }
 
     void enqueue(int value) {
         if (isFull()) {
             cout << "Queue Overflow!" << endl;
             return;
+        }
+        if (isEmpty()) {
+            front_index = 0;  // first element
         }
         arr[++rear_index] = value;
     }
@@ -39,7 +42,14 @@ public:
             cout << "Queue Underflow!" << endl;
             return;
         }
-        cout << "Dequeued: " << arr[front_index++] << endl;
+        cout << "Dequeued: " << arr[front_index] << endl;
+
+        if (front_index == rear_index) {
+            // only one element was present
+            front_index = rear_index = -1;
+        } else {
+            front_index++;
+        }
     }
 
     int front() {
@@ -76,6 +86,13 @@ int main() {
 
     q.dequeue();
     q.display();
+
+    q.dequeue();
+    q.dequeue();
+    q.dequeue(); // this should reset queue to empty
+
+    q.display();
+    cout << "Front: " << q.front() << "  Rear: " << q.rear() << endl;
 
     return 0;
 }
