@@ -109,4 +109,6 @@ int main()
 
     q.display();
     cout << "Front: " << q.front() << "  Rear: " << q.rear() << endl;
+
+    return 0;
 }
