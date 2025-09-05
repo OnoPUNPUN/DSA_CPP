@@ -1,95 +1,89 @@
 #include <iostream>
 using namespace std;
 
-struct Queue
-{
-    int *arr;
-    int front_index, rear_index, capacity;
+class Queue {
+private:
+    int* arr;
+    int front_index;
+    int rear_index;
+    int capacity;
 
-    Queue(int size)
-    {
+public:
+    // Constructor
+    Queue(int size) {
         capacity = size;
         arr = new int[capacity];
         front_index = -1;
         rear_index = -1;
     }
 
-    ~Queue()
-    {
+    // Destructor
+    ~Queue() {
         delete[] arr;
     }
 
-    bool isEmpty()
-    {
+    // Check if empty
+    bool isEmpty() const {
         return (front_index == -1 && rear_index == -1);
     }
 
-    bool isFull()
-    {
+    // Check if full
+    bool isFull() const {
         return (rear_index == capacity - 1);
     }
 
-    void enqueue(int value)
-    {
-        if (isFull())
-        {
+    // Add element
+    void enqueue(int value) {
+        if (isFull()) {
             cout << "Queue Overflow!" << endl;
             return;
         }
-        if (isEmpty())
-        {
+        if (isEmpty()) {
             front_index = 0;
         }
         arr[++rear_index] = value;
     }
 
-    void dequeue()
-    {
-        if (isEmpty())
-        {
+    // Remove element
+    void dequeue() {
+        if (isEmpty()) {
             cout << "Queue Underflow!" << endl;
             return;
         }
         cout << "Dequeued: " << arr[front_index] << endl;
 
-        if (front_index == rear_index)
-        {
-            front_index = rear_index = -1;
-        }
-        else
-        {
+        if (front_index == rear_index) {
+            front_index = rear_index = -1; // reset when empty
+        } else {
             front_index++;
         }
     }
 
-    int front()
-    {
+    // Peek front
+    int front() const {
         return isEmpty() ? -1 : arr[front_index];
     }
 
-    int rear()
-    {
+    // Peek rear
+    int rear() const {
         return isEmpty() ? -1 : arr[rear_index];
     }
 
-    void display()
-    {
-        if (isEmpty())
-        {
+    // Display elements
+    void display() const {
+        if (isEmpty()) {
             cout << "Queue is empty!" << endl;
             return;
         }
         cout << "Queue: ";
-        for (int i = front_index; i <= rear_index; i++)
-        {
+        for (int i = front_index; i <= rear_index; i++) {
             cout << arr[i] << " ";
         }
         cout << endl;
     }
 };
 
-int main()
-{
+int main() {
     Queue q(5);
 
     q.enqueue(10);
