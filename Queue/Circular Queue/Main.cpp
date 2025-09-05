@@ -3,10 +3,11 @@ using namespace std;
 
 class CircularQueue {
 private:
-    int *arr;
+    int* arr;
     int front_index, rear_index, capacity;
 
 public:
+    // Constructor
     CircularQueue(int size) {
         capacity = size;
         arr = new int[capacity];
@@ -14,18 +15,22 @@ public:
         rear_index = -1;
     }
 
+    // Destructor
     ~CircularQueue() {
         delete[] arr;
     }
 
-    bool isEmpty() {
+    // Check if queue is empty
+    bool isEmpty() const {
         return (front_index == -1);
     }
 
-    bool isFull() {
+    // Check if queue is full
+    bool isFull() const {
         return ((rear_index + 1) % capacity == front_index);
     }
 
+    // Add element
     void enqueue(int value) {
         if (isFull()) {
             cout << "Circular Queue Overflow!" << endl;
@@ -39,6 +44,7 @@ public:
         arr[rear_index] = value;
     }
 
+    // Remove element
     void dequeue() {
         if (isEmpty()) {
             cout << "Circular Queue Underflow!" << endl;
@@ -47,21 +53,24 @@ public:
         cout << "Dequeued: " << arr[front_index] << endl;
 
         if (front_index == rear_index) {
-            front_index = rear_index = -1;  // queue becomes empty
+            front_index = rear_index = -1;  // reset
         } else {
             front_index = (front_index + 1) % capacity;
         }
     }
 
-    int front() {
+    // Peek front element
+    int front() const {
         return isEmpty() ? -1 : arr[front_index];
     }
 
-    int rear() {
+    // Peek rear element
+    int rear() const {
         return isEmpty() ? -1 : arr[rear_index];
     }
 
-    void display() {
+    // Display all elements
+    void display() const {
         if (isEmpty()) {
             cout << "Circular Queue is empty!" << endl;
             return;
