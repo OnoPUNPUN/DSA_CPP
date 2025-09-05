@@ -1,98 +1,101 @@
 #include <iostream>
+#include <stdexcept>  // for runtime_error
 using namespace std;
 
 template <typename T>
-struct Stack
-{
-    int top;
+class Stack {
+private:
+    int topIndex;
     int maxSize;
-    T *arr;
+    T* arr;
 
-    Stack(int size)
-    {
+public:
+    // Constructor
+    Stack(int size) {
         maxSize = size;
         arr = new T[maxSize];
-        top = 0;
+        topIndex = 0;
     }
 
-    ~Stack()
-    {
+    // Destructor
+    ~Stack() {
         delete[] arr;
     }
 
-    bool isEmpty()
-    {
-        return (top == 0);
+    // Check if empty
+    bool isEmpty() const {
+        return (topIndex == 0);
     }
 
-    bool isFull()
-    {
-        return (top == maxSize);
+    // Check if full
+    bool isFull() const {
+        return (topIndex == maxSize);
     }
 
-    void push(T item)
-    {
-        if (isFull())
-        {
+    // Push element
+    void push(const T& item) {
+        if (isFull()) {
             cout << "Stack Overflow! Cannot push " << item << endl;
             return;
         }
-        arr[top++] = item;
+        arr[topIndex++] = item;
     }
 
-    void pop()
-    {
-        if (isEmpty())
-        {
+    // Pop element
+    void pop() {
+        if (isEmpty()) {
             cout << "Stack Underflow! Nothing to pop." << endl;
             return;
         }
-        top--;
+        topIndex--;
     }
 
-    T topElement()
-    {
-        if (isEmpty())
-        {
+    // Get top element
+    T topElement() const {
+        if (isEmpty()) {
             throw runtime_error("Stack is empty! No top element.");
         }
-        return arr[top - 1];
+        return arr[topIndex - 1];
     }
 
-    void printStack()
-    {
-        if (isEmpty())
-        {
+    // Print stack
+    void printStack() const {
+        if (isEmpty()) {
             cout << "Stack is empty!" << endl;
             return;
         }
         cout << "Stack elements (top to bottom): ";
-        for (int i = top - 1; i >= 0; i--)
-        {
+        for (int i = topIndex - 1; i >= 0; i--) {
             cout << arr[i] << " ";
         }
         cout << endl;
     }
 };
 
-int main()
-{
-    Stack<int> intStack(5);
-    intStack.push(10);
-    intStack.push(20);
-    intStack.push(30);
-    intStack.printStack();
-    cout << "Top element: " << intStack.topElement() << endl;
-    intStack.pop();
-    intStack.printStack();
+int main() {
+    try {
+        // Integer stack
+        Stack<int> intStack(5);
+        intStack.push(10);
+        intStack.push(20);
+        intStack.push(30);
+        intStack.printStack();
+        cout << "Top element: " << intStack.topElement() << endl;
+        intStack.pop();
+        intStack.printStack();
 
-    cout << "---------------------------" << endl;
+        cout << "---------------------------" << endl;
 
-    Stack<string> strStack(3);
-    strStack.push("Hello");
-    strStack.push("World");
-    strStack.printStack();
-    cout << "Top element: " << strStack.topElement() << endl;
+        // String stack
+        Stack<string> strStack(3);
+        strStack.push("Hello");
+        strStack.push("World");
+        strStack.printStack();
+        cout << "Top element: " << strStack.topElement() << endl;
+    } 
+    catch (const runtime_error& e) {
+        cout << "Error: " << e.what() << endl;
+    }
 
     return 0;
 }
