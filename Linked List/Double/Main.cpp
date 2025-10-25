@@ -1,149 +1,143 @@
 #include <iostream>
 using namespace std;
 
-class Node
-{
-public:
+struct Node {
     int data;
-    Node *next;
-    Node *prev;
-
-    Node()
-    {
-        this->data = 0;
-        this->next = NULL;
-        this->prev = NULL;
-    }
-    Node(int data)
-    {
-        this->data = data;
-        this->next = NULL;
-        this->prev = NULL;
-    }
+    Node* next;
+    Node* prev;
 };
 
-class DoublyLinkedList
-{
-private:
-    Node *head;
+// Create a new node
+Node* createNode(int item, Node* next = nullptr, Node* prev = nullptr) {
+    Node* newNode = new Node;
 
-public:
-    DoublyLinkedList()
-    {
-        head = NULL;
+    if (newNode == nullptr) {
+        cout << "Error! Can't create the node\n";
+        return nullptr;
     }
 
-    void insertAtBeginning(int value)
-    {
+    newNode->data = item;
+    newNode->next = next;
+    newNode->prev = prev;
+    return newNode;
+}
 
-        Node *newNode = new Node(value);
-        newNode->prev = NULL;
-        newNode->next = head;
+// Insert at the beginning
+Node* createFirst(Node* head, int item) {
+    Node* newNode = createNode(item, head, nullptr);
+    if (head != nullptr) {
+        head->prev = newNode;
+    }
+    return newNode; // new head
+}
 
-        if (head != NULL)
-            head->prev = newNode;
+// Insert at the end
+Node* createLast(Node* head, int item) {
+    Node* newNode = createNode(item);
 
-        head = newNode;
+    if (head == nullptr) {
+        return newNode;
     }
 
-    void insertAtEnd(int value)
-    {
-
-        Node *newNode = new Node(value);
-        newNode->next = NULL;
-
-        Node *temp = head;
-        while (temp->next != NULL)
-            temp = temp->next;
-
-        temp->next = newNode;
-        newNode->prev = temp;
+    Node* currentNode = head;
+    while (currentNode->next != nullptr) {
+        currentNode = currentNode->next;
     }
 
-    void insertAfter(int key, int value)
-    {
-        Node *temp = head;
-        while (temp != NULL && temp->data != key)
-            temp = temp->next;
+    currentNode->next = newNode;
+    newNode->prev = currentNode;
 
-        if (temp == NULL)
-        {
-            cout << "Node with value " << key << " not found.\n";
-            return;
-        }
+    return head;
+}
 
-        Node *newNode = new Node(value);
+// Insert after any given node
+void insertAtAny(Node* node, int item) {
+    if (node == nullptr) return;
 
-        newNode->next = temp->next;
-        newNode->prev = temp;
+    Node* newNode = createNode(item, node->next, node);
 
-        if (temp->next != NULL)
-            temp->next->prev = newNode;
+    if (node->next != nullptr) {
+        node->next->prev = newNode;
+    }
+    node->next = newNode;
+}
 
-        temp->next = newNode;
+// Remove first node
+Node* removeFirst(Node* head) {
+    if (head == nullptr) return nullptr;
+
+    Node* temp = head;
+    head = head->next;
+
+    if (head != nullptr) {
+        head->prev = nullptr;
     }
 
-    void display()
-    {
-        Node *temp = head;
-        cout << "Doubly Linked List: ";
-        while (temp != NULL)
-        {
-            cout << temp->data << "->";
-            temp = temp->next;
-        }
-        cout << "NULL" << endl;
+    delete temp;
+    return head;
+}
+
+// Remove last node
+Node* removeLast(Node* head) {
+    if (head == nullptr) return nullptr;
+
+    if (head->next == nullptr) { // only one node
+        delete head;
+        return nullptr;
     }
 
-    void deleteFromStart()
-    {
-        if (head == NULL)
-        {
-            cout << "List is empty.\n";
-            return;
-        }
-
-        Node *temp = head;
-        head = head->next;
-
-        if (head != NULL)
-            head->prev = NULL;
-
-        delete temp;
+    Node* currentNode = head;
+    while (currentNode->next != nullptr) {
+        currentNode = currentNode->next;
     }
 
-    void deleteFromEnd()
-    {
-        if (head == NULL)
-        {
-            cout << "List is empty.\n";
-            return;
-        }
+    currentNode->prev->next = nullptr;
+    delete currentNode;
 
-        Node *temp = head;
+    return head;
+}
 
-        while (temp->next != NULL)
-            temp = temp->next;
+// Remove a given node
+Node* removeAtAny(Node* head, Node* node) {
+    if (head == nullptr || node == nullptr) return head;
 
-        if (temp->prev != NULL)
-            temp->prev->next = NULL;
-        else
-            head = NULL;
-
-        delete temp;
+    if (node == head) {
+        return removeFirst(head);
     }
-};
 
-int main()
-{
+    if (node->next != nullptr) {
+        node->next->prev = node->prev;
+    }
+    if (node->prev != nullptr) {
+        node->prev->next = node->next;
+    }
 
-    DoublyLinkedList D;
-    D.insertAtBeginning(4);
-    D.insertAtEnd(5);
-    D.insertAtEnd(7);
+    delete node;
+    return head;
+}
 
-    D.deleteFromStart();
-    D.display();
+// Print list forward
+void print(Node* head) {
+    Node* currentNode = head;
+    while (currentNode != nullptr) {
+        cout << currentNode->data << " ";
+        currentNode = currentNode->next;
+    }
+    cout << "\n";
+}
 
-    return 0;
+// Print list backward
+void printReverse(Node* head) {
+    if (head == nullptr) return;
+
+    Node* currentNode = head;
+    while (currentNode->next != nullptr) {
+        currentNode = currentNode->next;
+    }
+
+    while (currentNode != nullptr) {
+        cout << currentNode->data << " ";
+        currentNode = currentNode->prev;
+    }
+    cout << "\n";
 }

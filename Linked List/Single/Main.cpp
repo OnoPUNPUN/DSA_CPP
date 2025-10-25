@@ -1,4 +1,5 @@
 #include <iostream>
+
 using namespace std;
 
 struct Node
@@ -7,181 +8,133 @@ struct Node
     Node *next;
 };
 
-void insertEnd(Node *&head, int data)
+Node *createNode(int item, Node *next)
 {
     Node *newNode = new Node;
-    newNode->data = data;
-    newNode->next = nullptr;
 
-    if (head == nullptr)
+    if (newNode == nullptr)
     {
-        head = newNode;
+        cout << "Error Can't Make the Node";
         return;
     }
 
-    Node *cur = head;
-    while (cur->next != nullptr)
-    {
-        cur = cur->next;
-    }
-
-    cur->next = newNode;
+    newNode->data = item;
+    newNode->next = next;
+    return newNode;
 }
 
-void insertFirst(Node *&head, int data)
-{
-    Node *newNode = new Node;
-    newNode->data = data;
-    newNode->next = head;
-    head = newNode;
-}
-
-void insertAfter(Node *head, int targetValue, int newValue)
-{
-    Node *cur = head;
-    while (cur != nullptr && cur->data != targetValue)
-    {
-        cur = cur->next;
-    }
-
-    if (cur == nullptr)
-    {
-        cout << "Value " << targetValue << " not found!\n";
-        return;
-    }
-
-    Node *newNode = new Node;
-    newNode->data = newValue;
-    newNode->next = cur->next;
-    cur->next = newNode;
-}
-
-void deleteFirst(Node *&head)
+Node *removeFirst(Node *head)
 {
     if (head == nullptr)
-    {
-        cout << "List empty\n";
         return;
-    }
 
     Node *temp = head;
     head = head->next;
     delete temp;
+
+    return head;
 }
 
-void deleteLast(Node *&head)
+Node *removeAtAny(Node *head, Node *node)
+{
+    if (head == nullptr || node == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (node == head)
+    {
+        head = head->next;
+        delete node;
+        return head;
+    }
+
+    Node *currentNode = head;
+
+    while (currentNode != nullptr)
+    {
+        if (currentNode->next = node)
+        {
+            break;
+        }
+
+        currentNode = currentNode->next;
+    }
+
+    if (currentNode == nullptr)
+    {
+        return head;
+    }
+
+    currentNode->next = node->next;
+    delete node;
+    return head;
+}
+
+Node *removeLast(Node *head)
 {
     if (head == nullptr)
     {
-        cout << "List empty\n";
-        return;
+        return nullptr;
     }
 
     if (head->next == nullptr)
     {
         delete head;
-        head = nullptr;
-        return;
+        return nullptr;
     }
 
-    Node *cur = head;
-    while (cur->next->next != nullptr)
+    Node *currentNode = head;
+
+    while (currentNode->next->next != nullptr)
     {
-        cur = cur->next;
+        currentNode = currentNode->next;
     }
 
-    delete cur->next;
-    cur->next = nullptr;
+    delete currentNode->next;
+    currentNode->next = nullptr;
+    return head;
 }
 
-void deleteAfter(Node *&head, int targetValue)
+Node *creatFirst(Node *head, int item)
 {
+    Node *newNode = createNode(item, head);
+    return newNode;
+}
+
+Node *createLast(Node *head, int item)
+{
+    Node *newNode = createNode(item, head);
+
     if (head == nullptr)
     {
-        cout << "List empty\n";
-        return;
+        return newNode;
     }
 
-    Node *cur = head;
-    while (cur != nullptr && cur->data != targetValue)
+    Node *currentNode = head;
+
+    while (currentNode->next != nullptr)
     {
-        cur = cur->next;
+        currentNode = currentNode->next;
     }
 
-    if (cur == nullptr)
-    {
-        cout << "Value " << targetValue << " not found!\n";
-        return;
-    }
-
-    if (cur->next == nullptr)
-    {
-        cout << "No node exists after " << targetValue << "\n";
-        return;
-    }
-
-    Node *target = cur->next;
-    cur->next = target->next;
-    delete target;
-    cout << "Deleted node after " << targetValue << "\n";
+    currentNode = newNode;
+    return head;
 }
 
-void printList(Node *head)
+void insertAtAny(Node *node, int item)
 {
-    if (head == nullptr)
-    {
-        cout << "List empty\n";
-        return;
-    }
-
-    Node *cur = head;
-    while (cur != nullptr)
-    {
-        cout << cur->data << " ";
-        cur = cur->next;
-    }
-    cout << "\n";
+    Node *newNode = createNode(item, node->next);
+    node->next = newNode;
 }
 
-void destroyList(Node *&head)
+void print(Node *head)
 {
-    while (head != nullptr)
+    Node *currentNode = head;
+
+    while (currentNode != nullptr)
     {
-        Node *temp = head;
-        head = head->next;
-        delete temp;
+        cout << currentNode->data << " ";
+        currentNode = currentNode->next;
     }
-}
-
-int main()
-{
-    Node *head = nullptr;
-    insertFirst(head, 10);
-    insertEnd(head, 20);
-    insertEnd(head, 30);
-    insertEnd(head, 40);
-
-    cout << "Initial list: ";
-    printList(head);
-
-    insertFirst(head, 60);
-    insertAfter(head, 20, 80);
-
-    cout << "2nd list: ";
-    printList(head);
-
-    deleteFirst(head);
-    cout << "After deleting first: ";
-    printList(head);
-
-    deleteLast(head);
-    cout << "After deleting last: ";
-    printList(head);
-
-    deleteAfter(head, 80);
-    cout << "After deleting the node after 80: ";
-    printList(head);
-
-    destroyList(head);
-    return 0;
 }
