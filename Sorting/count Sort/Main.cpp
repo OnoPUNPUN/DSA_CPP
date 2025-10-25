@@ -1,8 +1,4 @@
-#include <iostream>
-#include <stdio.h>
-#include <algorithm>
-#include <climits>
-
+#include<bits/stdc++.h>
 using namespace std;
 
 void print(int arr[], int n)
