@@ -1,5 +1,4 @@
-#include <iostream>
-#include <stdio.h>
+#include<bits/stdc++.h>
 using namespace std;
 
 // O(n ^ 2)
@@ -18,7 +17,6 @@ void insertionSortAss(int *arr, int n)
     {
         int curr = arr[i];
         int perv = i - 1;
-
         while (perv >= 0 && arr[perv] > curr)
         {
             swap(arr[perv], arr[perv + 1]);
